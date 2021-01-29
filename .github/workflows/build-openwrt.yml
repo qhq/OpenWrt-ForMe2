@@ -11,11 +11,11 @@ on:
     inputs:
       ssh:
         description: 'SSH远程'
-        required: false
+        required: true
         default: 'ssh-actions'
       wxtz:
         description: '微信通知'
-        required: false
+        required: true
         default: 'wxtz-actions'
       release:
         description: '发布固件'
