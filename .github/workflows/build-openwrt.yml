@@ -32,7 +32,7 @@ env:
   TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
   TZ: Asia/Shanghai
-  GITHUB_RELEASE: https://github.com/281677160/build-openwrt/releases
+  GITHUB_RELEASE: https://github.com/qhq/OpenWrt-ForMe2/releases
 
 jobs: 
   build:
