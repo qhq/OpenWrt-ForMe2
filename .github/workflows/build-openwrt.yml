@@ -11,11 +11,11 @@ on:
     inputs:
       ssh:
         description: 'SSH远程'
-        required: true
+        required: false
         default: 'ssh-actions'
       wxtz:
         description: '微信通知'
-        required: true
+        required: false
         default: 'wxtz-actions'
       release:
         description: '发布固件'
@@ -43,7 +43,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [Lede_x86_64] #Lede_XiaoMi_MiR3G
+        target: [Lede_XiaoMi_MiR3G] #Lede_XiaoMi_MiR3G
 
      # [Lede_x86_64,Lede_gl_mt300n_v2,Lede_nanopi_r2s,Lede_nanopi_r4s,Lede_newifi_d2,p2w_r619ac_128m,Lede_phicomm_k2p,Lede_phicomm_n1,Lede_redmi_ac2100,Lede_wankeyun,Lede_wndr3800,Lede_wndr4300_v1,Lede_wr703n_v1,Lede_xiaomi_r3pro,Lede_xiaoyu_c5,Lede_Raspberry_Pi4]
      
