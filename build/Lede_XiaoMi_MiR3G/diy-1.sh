@@ -20,4 +20,4 @@
 # --------------------单独添加插件部分--------------------
 
 # 添加钉钉机器人推送
-git clone https://github.com/zzsj0928/luci-app-serverchand.git package/luci-app-serverchand 
+# git clone https://github.com/zzsj0928/luci-app-serverchand.git package/luci-app-serverchand 
