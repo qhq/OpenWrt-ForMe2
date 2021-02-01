@@ -77,6 +77,8 @@ jobs:
         echo "UPLOAD_COWTRANSFER=${UPLOAD_COWTRANSFER}" >> $GITHUB_ENV
         echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> $GITHUB_ENV
         echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> $GITHUB_ENV
+        echo "${github.event.inputs.ssh}"
+        echo "${github.event.action}"
     
     - name: 微信通知
       uses: emon100/Action-Serverchan@v2
