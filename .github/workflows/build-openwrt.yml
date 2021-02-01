@@ -84,7 +84,7 @@ jobs:
       with:
         SCKEY: ${{ secrets.SCKEY }}
         text: 主人${{ env.WXFB_MESSAGE }}编译开始啦
-        desp: 主人您要编译的[${{ env.WXFB_MESSAGE }}]固件正在努力耕耘中,请耐心等待......${{ github.event.inputs.ssh }}..${{ github.event.action }}
+        desp: 主人您要编译的[${{ env.WXFB_MESSAGE }}]固件正在努力耕耘中,请耐心等待......
     
     - name: 开始安装编译所需系统
       env:
