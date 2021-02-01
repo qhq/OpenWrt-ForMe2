@@ -77,8 +77,6 @@ jobs:
         echo "UPLOAD_COWTRANSFER=${UPLOAD_COWTRANSFER}" >> $GITHUB_ENV
         echo "UPLOAD_RELEASE=${UPLOAD_RELEASE}" >> $GITHUB_ENV
         echo "SERVERCHAN_SCKEY=${SERVERCHAN_SCKEY}" >> $GITHUB_ENV
-        echo "${github.event.inputs.ssh}" >> $GITHUB_SSH
-        echo "${github.event.action}" >> $GITHUB_ACT
     
     - name: 微信通知
       uses: emon100/Action-Serverchan@v2
@@ -86,7 +84,7 @@ jobs:
       with:
         SCKEY: ${{ secrets.SCKEY }}
         text: 主人${{ env.WXFB_MESSAGE }}编译开始啦
-        desp: 主人您要编译的[${{ env.WXFB_MESSAGE }}]固件正在努力耕耘中,请耐心等待......
+        desp: 主人您要编译的[${{ env.WXFB_MESSAGE }}]固件正在努力耕耘中,请耐心等待......${{ github.event.inputs.ssh }}..${{ github.event.action }}
     
     - name: 开始安装编译所需系统
       env:
