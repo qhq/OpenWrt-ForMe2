@@ -14,13 +14,13 @@ on:
   workflow_dispatch:
     inputs:
       delete-older-workflow:
-        description: '删除github空间固件'
+        description: '删除github空间旧固件'
         required: false
-        default: 'true'
+        default: 'true'           #删除github空间旧固件（true=开启）（false=关闭）
       delete-older-releases:
-        description: '删除Releases固件'
+        description: '删除旧的发布'
         required: false
-        default: 'true'
+        default: 'true'           #删除旧的发布（true=开启）（false=关闭）
 
   schedule:
     - cron: 0 16 * * 1,3,5
@@ -35,7 +35,7 @@ jobs:
     name: delete-workflow-runs
     steps:
     
-      - name: 删除github空间固件
+      - name: 删除在github空间的老固件
         uses: Mattraks/delete-workflow-runs@main
         if: env.OLDER_WORKFLOW == 'true' || (github.event.inputs.delete-older-workflow == 'true')
         with:
@@ -44,11 +44,11 @@ jobs:
           retain_days: 0.5
           keep_minimum_runs: 0
     
-      - name: 删除Releases固件
-        uses: dev-drprasad/delete-older-releases@v0.1.0
+      - name: 删除自动发布的老固件
+        uses: dev-drprasad/delete-older-releases@master
         if: env.OLDER_RELEASES == 'true' || (github.event.inputs.delete-older-releases == 'true')
         with:
-          keep_latest: 3         #保留多少个发布不删除
+          keep_latest: 2         #保留多少个发布不删除
           delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
