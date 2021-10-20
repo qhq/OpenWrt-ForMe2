@@ -1,18 +1,14 @@
 #
 #
-# 感谢p3terx大神的一键编译脚本
-# 
-# Copyright (C) 2019 P3TERX <https://p3terx.com>
-# <https://github.com/P3TERX/Actions-OpenWrt.git>
+# 编译固件所用，不带SSH连接配置固件了
 #
+# 需要配置固件请用 configure.yml 配置
+#
+#
+
 name: 编译OpenWrt固件
 on:
   workflow_dispatch:
-    inputs:
-      ssh:
-        description: 'SSH远程'
-        required: false
-        default: 'ssh-actions'
 
 # 定时触发开始编译(把下面两个#去掉开启,时间设置请看定时编译说明)
   schedule:
@@ -60,8 +56,9 @@ jobs:
         echo "REGULAR_UPDATE=${REGULAR_UPDATE}" >> $GITHUB_ENV
         echo "USE_CACHEWRTBUILD=${USE_CACHEWRTBUILD}" >> $GITHUB_ENV
         echo "BY_INFORMATION=${BY_INFORMATION}" >> $GITHUB_ENV
+        echo "AUTOMATIC_AMLOGIC=${AUTOMATIC_AMLOGIC}" >> $GITHUB_ENV
         echo "CangKu=${Apidz##*/}" >> $GITHUB_ENV
-        echo "Modelfile=${{matrix.target}}" >> $GITHUB_ENV
+        echo "Modelfile=${{matrix.target}}" >> $GITHUB_ENV 
 
     - name: 公 告
       run: |
@@ -152,13 +149,6 @@ jobs:
       with:
         ccache: 'true'
         prefix: ${{ github.workspace }}/openwrt
-        
-    - name: SSH远程连接（配置固件）
-      if: env.SSH_ACTIONS == 'true' || (github.event.inputs.ssh == 'ssh' && github.event.inputs.ssh  != 'false')
-      uses: danshui-git/debugger-action@master
-      env:
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
     - name: 生成配置文件
       run: |
@@ -215,7 +205,7 @@ jobs:
         make -j$(nproc) || make -j1 V=s
         echo "::set-output name=status::success"
         echo "date=$(date "+%Y%m%d%H%M%S")" >> $GITHUB_ENV
-        echo "date1=$(date +'%m.%d')" >> $GITHUB_ENV
+        echo "date1=$(date +'%m-%d')" >> $GITHUB_ENV
 
     - name: 上传bin文件夹(固件+ipk)在 github actions
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
@@ -227,7 +217,7 @@ jobs:
     - name: 整理固件文件夹
       id: organizer
       run: |
-        if [ "${Modelfile}" == "openwrt_amlogic" ]; then
+        if [ "${AUTOMATIC_AMLOGIC}" == "true" ]; then
           source "${PATH1}/common.sh" && Diy_amlogic
         fi
         cd openwrt
@@ -243,7 +233,7 @@ jobs:
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "BOT=TRUE" >> $GITHUB_ENV
         echo "::set-output name=status::success"
-
+        
     - name: 上传固件在 github actions
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'
       uses: actions/upload-artifact@v2
@@ -282,13 +272,13 @@ jobs:
         bodyFile: "update_log.txt"
         artifacts: "${{ env.FIRMWARE }}/*"
         
-    - name: 把定时更新固件发布到云端1
+    - name: 把定时更新固件发布到云端1（请先设置好REPO_TOKEN）
       if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true'
       run: |
        cd openwrt
        source "${PATH1}/upgrade.sh" && Diy_Part3
         
-    - name: 把定时更新固件发布到云端2
+    - name: 把定时更新固件发布到云端2（请先设置好REPO_TOKEN）
       if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true'
       uses: svenstaro/upload-release-action@v2
       with:
@@ -298,14 +288,14 @@ jobs:
         overwrite: true
         file_glob: true
         
-    - name: 把定时更新固件发布到云端3
+    - name: 把定时更新固件发布到云端3（请先设置好REPO_TOKEN）
       if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true'
       run: |
         mkdir -p Github_Tags
         cd Github_Tags
         wget -q --no-cookie --no-check-certificate https://api.github.com/repos/${{github.repository}}/releases/tags/AutoUpdate -O Github_Tags
         
-    - name: 把定时更新固件发布到云端4
+    - name: 把定时更新固件发布到云端4（请先设置好REPO_TOKEN）
       if: steps.compile.outputs.status == 'success' && env.REGULAR_UPDATE == 'true'
       uses: svenstaro/upload-release-action@v2
       with:
