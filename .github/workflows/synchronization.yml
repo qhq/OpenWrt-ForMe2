@@ -1,6 +1,8 @@
 #
 # 同步上游仓库或者清理发布都需要用REPO_TOKEN密匙
 #
+# 记住，同步上游是不会同步您任何自建文件夹的，所以同步后您要自己对比我现有的文件夹里面diy-part.sh和settings.ini文件有没有更新
+#
 # REPO_TOKEN密匙制作教程：https://git.io/jm.md
 #
 
@@ -72,6 +74,10 @@ jobs:
           echo "QIDONG2=- 'config'" >> $GITHUB_ENV
           echo "TARGE1=$(grep 'target: \[' shangyou/.github/workflows/compile.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
           echo "TARGE2=$(grep 'target: \[' repogx/.github/workflows/compile.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
+          echo "BEIYONG1=$(grep -A 2 'target:' shangyou/.github/workflows/build-openwrt.yml |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')" >> $GITHUB_ENV
+          echo "BEIYONG2=$(grep -A 2 'target:' repogx/.github/workflows/build-openwrt.yml |grep '\# \[.*\]' | sed -r 's/\# \[(.*)\]/\1/' |sed 's/^[ ]*//g')" >> $GITHUB_ENV
+          echo "QDMAME1=$(sed -n '1,50p' shangyou/.github/workflows/build-openwrt.yml |grep '^name' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
+          echo "QDMAME2=$(sed -n '1,50p' repogx/.github/workflows/build-openwrt.yml |grep '^name' |sed 's/\//\\&/g' |sed 's/\*/\\&/g')" >> $GITHUB_ENV
         fi
         
     - name: 同步上游仓库
@@ -79,10 +85,24 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repogx/.github/workflows/build-openwrt.yml" 2>/dev/null)" ]]; then
-          sed -i "s/${{env.CRON1}}/${{env.CRON2}}/g" shangyou/.github/workflows/build-openwrt.yml
-          sed -i "s/${{env.TARGET1}}/${{env.TARGET2}}/g" shangyou/.github/workflows/build-openwrt.yml
-          sed -i "s/${{env.TARGE1}}/${{env.TARGE2}}/g" shangyou/.github/workflows/compile.yml
-          sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyou/.github/workflows/compile.yml
+          if [[ -n "${{env.QDMAME1}}" ]] && [[ -n "${{env.QDMAME2}}" ]]; then
+            sed -i "s/${{env.QDMAME1}}/${{env.QDMAME2}}/g" shangyou/.github/workflows/build-openwrt.yml
+          fi
+          if [[ -n "${{env.BEIYONG1}}" ]] && [[ -n "${{env.BEIYONG2}}" ]]; then
+            sed -i "s/${{env.BEIYONG1}}/${{env.BEIYONG2}}/g" shangyou/.github/workflows/build-openwrt.yml
+          fi
+          if [[ -n "${{env.CRON1}}" ]] && [[ -n "${{env.CRON2}}" ]]; then
+            sed -i "s/${{env.CRON1}}/${{env.CRON2}}/g" shangyou/.github/workflows/build-openwrt.yml
+          fi
+          if [[ -n "${{env.TARGET1}}" ]] && [[ -n "${{env.TARGET2}}" ]]; then
+            sed -i "s/${{env.TARGET1}}/${{env.TARGET2}}/g" shangyou/.github/workflows/build-openwrt.yml
+          fi
+          if [[ -n "${{env.TARGE1}}" ]] && [[ -n "${{env.TARGE2}}" ]]; then
+            sed -i "s/${{env.TARGE1}}/${{env.TARGE2}}/g" shangyou/.github/workflows/compile.yml
+          fi
+          if [[ -n "${{env.QIDONG1}}" ]] && [[ -n "${{env.QIDONG2}}" ]]; then
+            sed -i "s/${{env.QIDONG1}}/${{env.QIDONG2}}/g" shangyou/.github/workflows/compile.yml
+          fi
         fi
         cd repogx
         if [[ -n "$(ls -A "$GITHUB_WORKSPACE/repogx/.github/workflows/compile.yml" 2>/dev/null)" ]]; then
