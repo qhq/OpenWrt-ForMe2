@@ -201,7 +201,7 @@ jobs:
         path: config.txt
         
     - name: 同步上游compile.yml和build-openwrt.yml文件
-      if: steps.compileop.outputs.status == 'success' && env.REPO_TOKEN && 1 == 2
+      if: steps.compileop.outputs.status == 'success' && env.REPO_TOKEN
       run: |
         cd $GITHUB_WORKSPACE
         git clone -b main https://github.com/281677160/build-actions.git shangyouck
