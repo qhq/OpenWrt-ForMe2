@@ -300,14 +300,14 @@ jobs:
           token: ${{ secrets.REPO_TOKEN }}
           repository: ${{ github.repository }}
           keep_minimum_runs: 0
-          retain_days: ${{ github.event.inputs.days }}
+          retain_days: 7
     
     - name: 删除releases
       if: env.REPO_TOKEN
       uses: dev-drprasad/delete-older-releases@master
       with:
         repo: ${{ github.repository }}
-        keep_latest: ${{ github.event.inputs.rele }}
+        keep_latest: 10
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
