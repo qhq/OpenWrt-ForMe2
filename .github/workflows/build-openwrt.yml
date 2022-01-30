@@ -212,7 +212,6 @@ jobs:
           sed -i 's/^#\(.*schedule:\)/\1/' shangyouck/.github/workflows/build-openwrt.yml
           sed -i 's/^#\(.*- cron:\)/\1/' shangyouck/.github/workflows/build-openwrt.yml
         fi
-        sed -i 's/\/281677160\/common/\/qhq\/common/' shangyouck/.github/workflows/build-openwrt.yml
         echo "TARGET1=$(grep 'target: \[' shangyouck/.github/workflows/build-openwrt.yml |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
         echo "TARGET2=$(grep 'target: \[' $GITHUB_WORKSPACE/.github/workflows/${{env.BILDYML}}  |sed 's/^[ ]*//g' |grep '^target' |cut -d '#' -f1 |sed 's/\[/\\&/' |sed 's/\]/\\&/')" >> $GITHUB_ENV
         echo "QIDONG1=$(grep -A 1 'paths:' shangyouck/.github/workflows/compile.yml |awk 'NR==2' |sed 's/^[ ]*//g' |sed 's/\//\\&/g')" >> $GITHUB_ENV
