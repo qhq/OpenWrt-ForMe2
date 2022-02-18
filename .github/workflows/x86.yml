@@ -70,6 +70,7 @@ jobs:
 
     - name: 整理脚本
       run: |
+        git clone --depth 1 -b main https://github.com/qhq/common build/common > /dev/null 2>&1
         chmod -R +x "${GITHUB_WORKSPACE}/build/common"
         echo "NETIP=package/base-files/files/etc/networkip" >> $GITHUB_ENV
         echo "DELETE=package/base-files/files/etc/deletefile" >> $GITHUB_ENV
@@ -87,7 +88,7 @@ jobs:
           echo "OpenWrt_name=21.02" >> $GITHUB_ENV
         fi
         
-    - name: 电报通知
+    - name: 推送通知
       if: env.PUSH_PLUS_TOKEN && env.SERVERCHAN_SCKEY == 'PUSH' || env.TELEGRAM_BOT_TOKEN && env.SERVERCHAN_SCKEY == 'TELE'
       run: |
         if [[ "${SERVERCHAN_SCKEY}" == "TELE" ]]; then
