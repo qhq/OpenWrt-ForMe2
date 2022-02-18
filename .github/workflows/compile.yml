@@ -268,7 +268,7 @@ jobs:
         echo "##### 奶牛快传：$(cat cowtransfer.log | grep https | cut -f3 -d" ")" >> update_log.txt
         sed -i "s/Download Link/奶牛快传/g" cowtransfer.log
         echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
-        
+
     - name: 上传固件到「WeTransfer」
       if: steps.organizer.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true'
       run: |
