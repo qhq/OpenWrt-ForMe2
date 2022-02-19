@@ -1,3 +1,7 @@
+
+- [`说明`](https://github.com/danshui-git/shuoming#readme)
+
+
 ##
  默认IP地址：192.168.2.1
  账户：root   密码：空
