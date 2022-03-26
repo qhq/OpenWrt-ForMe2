@@ -37,6 +37,7 @@ on:
   schedule:
    - cron: 0 16 * * *
 
+
 env:
   BILDYML: build-openwrt.yml
   
@@ -231,14 +232,14 @@ jobs:
           token: ${{ secrets.REPO_TOKEN }}
           repository: ${{ github.repository }}
           keep_minimum_runs: 0
-          retain_days: 7
+          retain_days: ${{ github.event.inputs.days }}
     
     - name: 删除releases
       if: env.REPO_TOKEN
       uses: dev-drprasad/delete-older-releases@master
       with:
         repo: ${{ github.repository }}
-        keep_latest: 10
+        keep_latest: ${{ github.event.inputs.rele }}
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
