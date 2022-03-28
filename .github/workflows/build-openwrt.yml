@@ -37,7 +37,6 @@ on:
   schedule:
    - cron: 0 16 * * *
 
-
 env:
   Github: https://github.com/${{github.repository}}
   Author: ${{github.actor}}
