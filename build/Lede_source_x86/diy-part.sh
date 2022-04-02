@@ -16,13 +16,13 @@ uci set network.lan.gateway='192.168.2.1'                     # IPv4 网关
 uci set network.lan.broadcast='192.168.2.255'                 # IPv4 广播
 uci set network.lan.dns='223.5.5.5 114.114.114.114'           # DNS(多个DNS要用空格分开)
 uci set network.lan.delegate='0'                              # 去掉LAN口使用内置的 IPv6 管理
-uci set system.@system[0].hostname='OpenWrt'              # 修改主机名称为OpenWrt-123
+uci set system.@system[0].hostname='OpenWrt'                  # 修改主机名称为OpenWrt-123
 #uci set dhcp.lan.ignore='1'                                  # 关闭DHCP功能（去掉uci前面的#生效）
 #uci set ttyd.@ttyd[0].command='/bin/login -f root'           # 设置ttyd免帐号登录（去掉uci前面的#生效）
 EOF
 
 
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile             # 选择argon必选认主题
+sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' feeds/luci/collections/luci/Makefile             # 选择argon必选认主题(可自行修改您要的,主题名称必须对)
 
 # 编译多主题时,设置某主题成默认主题（危险操作,你要确定您这里改的主题的名字准确,比如[argon]和肯定编译了该主题,要不然进不了后台）
 #sed -i "/exit 0/i\uci set luci.main.mediaurlbase='/luci-static/argon' && uci commit luci" "$BASE_PATH/etc/rc.local"
