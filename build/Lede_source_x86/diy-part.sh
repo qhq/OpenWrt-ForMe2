@@ -10,7 +10,7 @@
 
 
 cat >$NETIP <<-EOF
-uci set network.lan.ipaddr='192.168.2.1'                      # IPv4 地址(openwrt后台地址)
+uci set network.lan.ipaddr='192.168.2.2'                      # IPv4 地址(openwrt后台地址)
 uci set network.lan.netmask='255.255.255.0'                   # IPv4 子网掩码
 uci set network.lan.gateway='192.168.2.1'                     # IPv4 网关
 uci set network.lan.broadcast='192.168.2.255'                 # IPv4 广播
@@ -18,7 +18,7 @@ uci set network.lan.dns='223.5.5.5 114.114.114.114'           # DNS(多个DNS要
 uci set network.lan.delegate='0'                              # 去掉LAN口使用内置的 IPv6 管理(若用IPV6请注释或者删除这个)
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'                      # 禁止解析 IPv6 DNS记录(若用IPV6请注释或者删除这个)
 
-#uci set dhcp.lan.ignore='1'                                  # 关闭DHCP功能（去掉uci前面的#生效）
+uci set dhcp.lan.ignore='1'                                  # 关闭DHCP功能（去掉uci前面的#生效）
 uci set system.@system[0].hostname='OpenWrt'              # 修改主机名称为OpenWrt-123
 #uci set ttyd.@ttyd[0].command='/bin/login -f root'           # 设置ttyd免帐号登录（去掉uci前面的#生效）
 
